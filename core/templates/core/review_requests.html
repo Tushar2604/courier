@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Review requests</title>
+</head>
+<body>
+    <h2>Review Requests</h2>
+    <ul class="collection">
+        {% for message in messages %}
+            <li class="collection-item avatar">
+                <i class="material-icons circle">email</i>
+                <span class="title">Request from {{ message.sender.username }}</span>
+                <p>Parcel: {{ message.parcel.description }}</p>
+                <p>{{ message.message }}</p>
+                {% if message.parcel.traveling_user %}
+                    <p>Traveling User: {{ message.parcel.traveling_user.username }}</p>
+                {% else %}
+                    <form method="post" action="{% url 'confirm_traveler' message.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-small green">Confirm Traveler</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% empty %}
+            <li class="collection-item">No requests available.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

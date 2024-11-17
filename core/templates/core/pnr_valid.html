@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>PNR Validation & File Upload</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .input-group input[type="text"],
+        .input-group input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .input-group input[type="file"] {
+            padding: 5px;
+        }
+        .validate-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .validate-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>PNR & Route Validator</h1>
+
+    <!-- Origin Input -->
+    <div class="input-group">
+        <label for="origin">Enter Origin:</label>
+        <input type="text" id="origin" name="origin" placeholder="Enter the origin station" required>
+    </div>
+
+    <!-- Distance Input -->
+    <div class="input-group">
+        <label for="distance">Destination:</label>
+        <input type="text" id="destination" name="destination" placeholder="Enter the destination" required>
+    </div>
+
+    <!-- PNR Input -->
+    <div class="input-group">
+        <label for="pnr">Enter PNR Number:</label>
+        <input type="text" id="pnr" name="pnr" placeholder="Enter your 10-digit PNR number" required>
+    </div>
+
+    <!-- File Upload (Optional) -->
+    <div class="input-group">
+        <label for="folder">Upload Folder (Optional):</label>
+        <input type="file" id="folder" name="folder" webkitdirectory directory multiple>
+    </div>
+
+    <!-- Validate Button -->
+    <button class="validate-btn" id="validate-btn">Validate</button>
+
+    <!-- Div to show validation results -->
+    <div id="validationResult" style="margin-top: 20px; color: #333;"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    // Function to get query parameters from URL
+    function getQueryParams() {
+        const queryParams = new URLSearchParams(window.location.search);
+        const sender_origin = queryParams.get('sender_origin');
+        const sender_destination = queryParams.get('sender_destination');
+        return {
+            sender_origin: sender_origin,
+            sender_destination: sender_destination
+        };
+    }
+
+    document.getElementById('validate-btn').addEventListener('click', function() {
+        const origin = document.getElementById('origin').value;
+        const destination = document.getElementById('destination').value;
+        const pnr = document.getElementById('pnr').value;
+        const folderInput = document.getElementById('folder').files;
+        const { sender_origin, sender_destination } = getQueryParams();  // Get from URL
+
+        if (!origin) {
+            alert("Please enter the origin station.");
+            return;
+        }
+
+        if (!destination) {
+            alert("Please enter the distance traveled.");
+            return;
+        }
+
+        if (!pnr) {
+            alert("Please enter a valid PNR number.");
+            return;
+        }
+
+        // Simple validation check for PNR (10 digits)
+        if (!/^\d{10}$/.test(pnr)) {
+            alert("Please enter a valid 10-digit PNR number.");
+            return;
+        }
+
+        // Folder upload is optional, so no need to validate the folder if it's not uploaded
+        if (folderInput.length > 0) {
+            alert("PNR, origin, distance, and folder validated successfully!");
+        } //else {
+        // alert("PNR, origin, and distance validated successfully (without folder)!");
+        //}
+        // You can add further logic here for processing PNR, origin, distance, and folder files
+
+        // Prepare the data for AJAX request
+        const data = {
+            'origin': origin,
+            'destination': destination,
+            'sender_origin': sender_origin,
+            'sender_destination': sender_destination,
+            'pnr_number': pnr,
+            'csrfmiddlewaretoken': '{{ csrf_token }}'  // Include CSRF token
+        };
+
+        // Send AJAX request to the Django view
+        $.ajax({
+            url: "/pnr-validation/",  // Update this URL to match your Django view URL
+            type: "POST",
+            data: data,
+            success: function(response) {
+                // Display the result in the validationResult div
+                console.log("Success:", response)
+                $("#validationResult").html(response.message);
+            },
+            error: function(response) {
+                // Display error message
+                console.error("Error:", response)
+                $("#validationResult").html("Error: " + response.responseText);
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

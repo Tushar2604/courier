@@ -1,0 +1,6 @@
+<a href="{% url 'home_page' %}">Go back</a>
+<form method="POST">
+    {% csrf_token %}
+    <p>Are you sure you want to delete this parcel? "{{parcel}}"</p>
+    <input type="Submit" value="Delete">
+</form>

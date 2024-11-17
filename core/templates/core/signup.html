@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@48,400,0,0">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style_index.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="nav-wrapper transparent">
+            <div class="container">
+                <a href="{% if user.is_authenticated %}{% url 'user_page' %}{% else %}{% url 'home_page' %}{% endif %}" class="brand-logo">DeliverMe<span>.</span></a>
+                <a href="#" class="sidenav-trigger" data-target="mobile-menu">
+                    <i class="material-icons">menu</i>
+                </a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="{% if user.is_authenticated %}{% url 'user_page' %}{% else %}{% url 'home_page' %}{% endif %}">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul class="sidenav" id="mobile-menu">
+            <li><a href="{% if user.is_authenticated %}{% url 'user_page' %}{% else %}{% url 'home_page' %}{% endif %}">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact Us</a></li>
+        </ul>
+    </header>
+    <div class="form-popup">
+        <div class="form-box">
+            <div class="form-details">
+                <h4>Create Account</h4>
+                <p>Please sign up using your personal credentials to join our community.</p>
+            </div>
+            <div class="form-content">
+                <h4>SIGN UP</h4>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="input-field">
+                        {{ form.username.label_tag }}
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <span class="error-tooltip">{{ form.username.errors }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="input-field">
+                        {{ form.password1.label_tag }}
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                            <span class="error-tooltip">{{ form.password1.errors }}</span>
+                        {% endif %}
+                    </div>
+                    <div class="input-field">
+                        {{ form.password2.label_tag }}
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                            <span class="error-tooltip">{{ form.password2.errors }}</span>
+                        {% endif %}
+                    </div>
+
+                    <input type="submit" value="Sign up" class="btn waves-effect waves-light">
+                </form>
+
+                <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.sidenav');
+            var instances = M.Sidenav.init(elems);
+
+            var errorTooltips = document.querySelectorAll('.error-tooltip');
+            errorTooltips.forEach(function(tooltip) {
+                var inputField = tooltip.closest('.input-field');
+                var inputFieldRect = inputField.getBoundingClientRect();
+                var tooltipRect = tooltip.getBoundingClientRect();
+
+
+                if (inputFieldRect.right + tooltipRect.width > window.innerWidth) {
+                    tooltip.style.left = 'auto';
+                    tooltip.style.right = 'calc(100% + 10px)';
+                } else {
+                    tooltip.style.left = 'calc(100% + 10px)';
+                }
+
+
+                if (inputFieldRect.bottom + tooltipRect.height > window.innerHeight) {
+                    tooltip.style.top = 'auto';
+                    tooltip.style.bottom = '50%';
+                } else {
+                    tooltip.style.top = '50%';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

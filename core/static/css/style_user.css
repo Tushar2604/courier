@@ -1,0 +1,239 @@
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    background: url("../images/bg-courier.jpg") no-repeat center center/cover;
+    color: #fff;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+main {
+    flex: 1 0 auto;
+    position: relative;
+}
+
+.nav-wrapper .right .material-icons {
+    line-height: 64px;
+    padding: 0 15px;
+}
+
+.hero-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: none;
+    padding: 100px 20px;
+    animation: fadeIn 2s ease-in-out;
+}
+
+.hero-section h3 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1px;
+    animation: slideInDown 1s ease-in-out;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    animation: slideInDown 1s ease-in-out;
+}
+
+.hero-section p {
+    font-size: 1.2rem;
+    font-weight: 300;
+    margin-bottom: 40px;
+    animation: slideInUp 1s ease-in-out;
+}
+
+.hero-section .btn {
+    margin: 0 10px;
+    padding: 12px 30px;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(135deg, #f0e68c, #bdb76b);
+    color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    /*display: inline-flex;*/
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-section .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+}
+
+.brand-logo:hover {
+    color: #ffebcd
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+@keyframes slideInUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+
+.sidenav {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.sidenav a {
+    color: #fff !important;
+}
+
+.sidenav .material-icons {
+    color: #fff !important;
+    line-height: inherit;
+    padding: 0;
+}
+
+.nav-wrapper {
+    position: relative;
+}
+
+.dropdown-content {
+    background-color: #2c3e50;
+    border-radius: 10px;
+    overflow: hidden;
+    width: auto;
+    min-width: 150px;
+}
+
+.dropdown-content li {
+    padding: 0;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+    color: #ecf0f1 !important;
+    padding: 10px 20px;
+    display: block;
+    white-space: nowrap;
+}
+
+.dropdown-content li > a:hover, .dropdown-content li > span:hover {
+    background-color: #34495e;
+}
+
+.dropdown-content li:not(.divider) {
+    height: auto;
+    line-height: normal;
+}
+
+.dropdown-content .divider {
+    background-color: #ecf0f1;
+}
+
+.header {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.collection-item {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding-bottom: 70px;
+    color: #000000;
+}
+
+.secondary-content {
+    position: absolute;
+    top: 20px;
+    right: 10px;
+}
+
+.title {
+    color: #000000;
+}
+
+.actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    position: relative;
+    margin-top: 10px;
+}
+
+.actions .btn-small {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.my-parcels-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.my-parcels-header .add-icon {
+    margin-left: 10px;
+    font-size: 1.5em;
+    color: #fff;
+    position: relative;
+}
+
+.tootltipped {
+    position: relative;
+    cursor: pointer;
+}
+
+.tooltipped:hover::hover {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -35px;
+    left: 50%;
+    transform: translateY(-50%);
+    background: #333;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    white-space: nowrap;
+    z-index: 10;
+    font-size: 0.9em;
+    opacity: 0;
+    animation: fadeIn 0.3s forwards;
+}
+
+#traveler-form {
+    display: none;
+}
+
+.modal-content {
+    color: #000000;
+}
+
+@media (max-width: 992px) {
+    .right {
+        position: static;
+        margin-left: auto;
+    }
+}
+
